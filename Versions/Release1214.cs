@@ -95,7 +95,7 @@ namespace MinecraftModDatagen.Versions
 						ItemBlock.WriteLine("  }}", 5);
 						ItemBlock.WriteLine("}}", 6);
 						ItemBlock.Close();
-						Console.WriteLine($"Expecting a file called {itemData.EntryName}.png to be in textures/item");
+						Console.WriteLine($"Expecting a file called {itemData.EntryName}.json to be in models/block");
 					}
 					else
 					{
