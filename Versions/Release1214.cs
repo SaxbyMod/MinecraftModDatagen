@@ -45,7 +45,7 @@ namespace MinecraftModDatagen.Versions
 			foreach (var item in data)
 			{
 				var itemData = item.Value;
-				if (itemData.ModelType == "Block_Cube")
+				if (itemData.ModelType == "Cube_All")
 				{
 					Console.WriteLine($"Writing Block State for Block Cube called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/blockstates/");
@@ -60,6 +60,7 @@ namespace MinecraftModDatagen.Versions
 					Blockstate.Close();
 					Console.WriteLine($"Writing Block Model for Block Cube called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/models/block/");
+					List<string> models = itemData.ModelTextureName.Split(';').ToList();
 					var ModelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModID}/models/block/{itemData.EntryName}.json");
 					if (itemData.ModelTextureName != "")
 					{
@@ -83,6 +84,69 @@ namespace MinecraftModDatagen.Versions
 						ModelBlock.Close();
 						Console.WriteLine($"Expecting a file called {itemData.EntryName}.png to be in textures/block");
 					}
+					Console.WriteLine($"Writing Item for Block Cube called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/items/");
+					var ItemBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModID}/items/{itemData.EntryName}.json");
+					if (itemData.ItemTextureName == "")
+					{
+						ItemBlock.WriteLine("{{", 0);
+						ItemBlock.WriteLine("  \"model\": {{", 1);
+						ItemBlock.WriteLine("    \"type\": \"minecraft:model\",", 2);
+						ItemBlock.WriteLine($"    \"model\": \"{itemData.ModID}:block/{itemData.EntryName}\"", 4);
+						ItemBlock.WriteLine("  }}", 5);
+						ItemBlock.WriteLine("}}", 6);
+						ItemBlock.Close();
+						Console.WriteLine($"Expecting a file called {itemData.EntryName}.json to be in models/block");
+					}
+					else
+					{
+						ItemBlock.WriteLine("{{", 0);
+						ItemBlock.WriteLine("  \"model\": {{", 1);
+						ItemBlock.WriteLine("    \"type\": \"minecraft:model\",", 2);
+						ItemBlock.WriteLine($"    \"model\": \"{itemData.ModID}:item/{itemData.ItemTextureName}\"", 3);
+						ItemBlock.WriteLine("  }}", 4);
+						ItemBlock.WriteLine("}}", 5);
+						ItemBlock.Close();
+						Console.WriteLine($"Expecting a file called {itemData.ItemTextureName}.png to be in textures/item");
+					}
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/textures/block/");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/textures/item/");
+				}
+				if (itemData.ModelType == "Cube")
+				{
+					Console.WriteLine($"Writing Block State for Block Cube called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/blockstates/");
+					var Blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModID}/blockstates/{itemData.EntryName}.json");
+					Blockstate.WriteLine("{{", 0);
+					Blockstate.WriteLine("  \"variants\": {{", 1);
+					Blockstate.WriteLine("    \"\": {{", 2);
+					Blockstate.WriteLine($"      \"model\": \"{itemData.ModID}:block/{itemData.EntryName}\"", 3);
+					Blockstate.WriteLine("    }}", 4);
+					Blockstate.WriteLine("  }}", 5);
+					Blockstate.WriteLine("}}", 6);
+					Blockstate.Close();
+					Console.WriteLine($"Writing Block Model for Block Cube called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/models/block/");
+					List<string> models = itemData.ModelTextureName.Split(';').ToList();
+					var ModelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModID}/models/block/{itemData.EntryName}.json");
+					ModelBlock.WriteLine("{{", 0);
+					ModelBlock.WriteLine("  \"parent\": \"block/cube\",", 1);
+					ModelBlock.WriteLine("  \"textures\": {{", 2);
+					ModelBlock.WriteLine($"    \"down\": \"{itemData.ModID}:block/{models[0]}\",", 3);
+					ModelBlock.WriteLine($"    \"up\": \"{itemData.ModID}:block/{models[1]}\",", 4);
+					ModelBlock.WriteLine($"    \"north\": \"{itemData.ModID}:block/{models[2]}\",", 5);
+					ModelBlock.WriteLine($"    \"east\": \"{itemData.ModID}:block/{models[3]}\",", 6);
+					ModelBlock.WriteLine($"    \"south\": \"{itemData.ModID}:block/{models[4]}\",", 7);
+					ModelBlock.WriteLine($"    \"west\": \"{itemData.ModID}:block/{models[5]}\"", 8);
+					ModelBlock.WriteLine("  }}", 9);
+					ModelBlock.WriteLine("}}", 10);
+					ModelBlock.Close();
+					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[3]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[4]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[5]}.png to be in textures/block");
 					Console.WriteLine($"Writing Item for Block Cube called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModID}/items/");
 					var ItemBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModID}/items/{itemData.EntryName}.json");
