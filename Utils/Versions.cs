@@ -6,8 +6,4 @@ public class Versions
 	{
 		"1.21.4"
 	};
-	public static List<string> ScreenshotVersions = new()
-	{
-		"1.21.4-Release"
-	};
 }
