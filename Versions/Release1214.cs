@@ -56,7 +56,7 @@ namespace MinecraftModDatagen.Versions
 					blockstate.WriteLine("  }}", 5);
 					blockstate.WriteLine("}}", 6);
 					blockstate.Close();
-					Console.WriteLine($"Writing Block Model for Cube_All called: {itemData.EntryName}");
+					Console.WriteLine($"Writing Block Model(s) for Cube_All called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
 					modelBlock.WriteLine("{{", 0);
@@ -118,7 +118,7 @@ namespace MinecraftModDatagen.Versions
 					blockstate.WriteLine("  }}", 5);
 					blockstate.WriteLine("}}", 6);
 					blockstate.Close();
-					Console.WriteLine($"Writing Block Model for Cube called: {itemData.EntryName}");
+					Console.WriteLine($"Writing Block Model(s) for Cube called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					List<string> models = itemData.ModelTextureName.Split(';').ToList();
 					var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
@@ -302,7 +302,7 @@ namespace MinecraftModDatagen.Versions
 					blockstate.WriteLine("  }}", 116);
 					blockstate.WriteLine("}}", 117);
 					blockstate.Close();
-					Console.WriteLine($"Writing Block Model for Button called: {itemData.EntryName}");
+					Console.WriteLine($"Writing Block Model(s) for Button called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					var button = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
 					button.WriteLine("{{", 0);
@@ -386,7 +386,7 @@ namespace MinecraftModDatagen.Versions
 					blockstate.WriteLine("  }}", 11);
 					blockstate.WriteLine("}}", 12);
 					blockstate.Close();
-					Console.WriteLine($"Writing Block Model for Slab called: {itemData.EntryName}");
+					Console.WriteLine($"Writing Block Model(s) for Slab called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					List<string> models = itemData.ModelTextureName.Split(';').ToList();
 					var slab = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
@@ -450,6 +450,309 @@ namespace MinecraftModDatagen.Versions
 					else
 					{
 						Console.WriteLine($"Writing Item for Slab called: {itemData.EntryName}");
+						itemBlock.WriteLine("{{", 0);
+						itemBlock.WriteLine("  \"model\": {{", 1);
+						itemBlock.WriteLine("    \"type\": \"minecraft:model\",", 2);
+						itemBlock.WriteLine($"    \"model\": \"{itemData.ModId}:item/{itemData.EntryName}\"", 3);
+						itemBlock.WriteLine("  }}", 4);
+						itemBlock.WriteLine("}}", 5);
+						itemBlock.Close();
+						Console.WriteLine($"Writing Item Model for Slab called: {itemData.EntryName}");
+						Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/item/");
+						var itemModel = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/item/{itemData.EntryName}.json");
+						itemModel.WriteLine("{{", 0);
+						itemModel.WriteLine("  \"parent\": \"minecraft:item/generated\",", 1);
+						itemModel.WriteLine("  \"textures\": {{", 2);
+						itemModel.WriteLine($"    \"layer0\": \"{itemData.ModId}:item/{itemData.ItemTextureName}\"", 3);
+						itemModel.WriteLine("  }}", 4);
+						itemModel.WriteLine("}}", 5);
+						itemModel.Close();
+						Console.WriteLine($"Expecting a file called {itemData.ItemTextureName}.png to be in textures/item");
+					}
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
+				}
+				if (itemData.ModelType == "Stair")
+				{
+					Console.WriteLine($"Writing Block State for Slab called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
+					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
+					blockstate.WriteLine($$"""
+					                       {
+					                         "variants": {
+					                           "facing=east,half=bottom,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "y": 270
+					                           },
+					                           "facing=east,half=bottom,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner"
+					                           },
+					                           "facing=east,half=bottom,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "y": 270
+					                           },
+					                           "facing=east,half=bottom,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer"
+					                           },
+					                           "facing=east,half=bottom,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}"
+					                           },
+					                           "facing=east,half=top,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180
+					                           },
+					                           "facing=east,half=top,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "facing=east,half=top,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180
+					                           },
+					                           "facing=east,half=top,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "facing=east,half=top,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "x": 180
+					                           },
+					                           "facing=north,half=bottom,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "y": 180
+					                           },
+					                           "facing=north,half=bottom,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "y": 270
+					                           },
+					                           "facing=north,half=bottom,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "y": 180
+					                           },
+					                           "facing=north,half=bottom,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "y": 270
+					                           },
+					                           "facing=north,half=bottom,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "y": 270
+					                           },
+					                           "facing=north,half=top,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "facing=north,half=top,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180
+					                           },
+					                           "facing=north,half=top,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "facing=north,half=top,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180
+					                           },
+					                           "facing=north,half=top,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "facing=south,half=bottom,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner"
+					                           },
+					                           "facing=south,half=bottom,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "y": 90
+					                           },
+					                           "facing=south,half=bottom,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer"
+					                           },
+					                           "facing=south,half=bottom,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "y": 90
+					                           },
+					                           "facing=south,half=bottom,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "y": 90
+					                           },
+					                           "facing=south,half=top,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "facing=south,half=top,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 180
+					                           },
+					                           "facing=south,half=top,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "facing=south,half=top,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 180
+					                           },
+					                           "facing=south,half=top,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "facing=west,half=bottom,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "y": 90
+					                           },
+					                           "facing=west,half=bottom,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "y": 180
+					                           },
+					                           "facing=west,half=bottom,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "y": 90
+					                           },
+					                           "facing=west,half=bottom,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "y": 180
+					                           },
+					                           "facing=west,half=bottom,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "y": 180
+					                           },
+					                           "facing=west,half=top,shape=inner_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 180
+					                           },
+					                           "facing=west,half=top,shape=inner_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_inner",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "facing=west,half=top,shape=outer_left": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 180
+					                           },
+					                           "facing=west,half=top,shape=outer_right": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_outer",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "facing=west,half=top,shape=straight": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "uvlock": true,
+					                             "x": 180,
+					                             "y": 180
+					                           }
+					                         }
+					                       }
+					                       """);
+					blockstate.Close();
+					Console.WriteLine($"Writing Block Model(s) for Stair called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
+					List<string> models = itemData.ModelTextureName.Split(';').ToList();
+					var stair = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+					stair.WriteLine($$"""
+					                  {
+					                    "parent": "minecraft:block/stairs",
+					                    "textures": {
+					                      "bottom": "{{itemData.ModId}}:block/{{models[0]}}",
+					                      "side": "{{itemData.ModId}}:block/{{models[1]}}",
+					                      "top": "{{itemData.ModId}}:block/{{models[2]}}"
+					                    }
+					                  }
+					                  """);
+					stair.Close();
+					var stairinner = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inner.json");
+					stairinner.WriteLine($$"""
+					                       {
+					                         "parent": "minecraft:block/inner_stairs",
+					                         "textures": {
+					                           "bottom": "{{itemData.ModId}}:block/{{models[3]}}",
+					                           "side": "{{itemData.ModId}}:block/{{models[4]}}",
+					                           "top": "{{itemData.ModId}}:block/{{models[5]}}"
+					                         }
+					                       }
+					                       """);
+					stairinner.Close();
+					var stairouter = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_outer.json");
+					stairouter.WriteLine($$"""
+					                       {
+					                         "parent": "minecraft:block/outer_stairs",
+					                         "textures": {
+					                           "bottom": "{{itemData.ModId}}:block/{{models[6]}}",
+					                           "side": "{{itemData.ModId}}:block/{{models[7]}}",
+					                           "top": "{{itemData.ModId}}:block/{{models[8]}}"
+					                         }
+					                       }
+					                       """);
+					stairouter.Close();
+					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[3]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[4]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[5]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[6]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[7]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[8]}.png to be in textures/block");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/items/");
+					var itemBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/items/{itemData.EntryName}.json");
+					if (itemData.ItemTextureName == "")
+					{
+						Console.WriteLine($"Writing Item for Stair called: {itemData.EntryName}");
+						itemBlock.WriteLine("{{", 0);
+						itemBlock.WriteLine("  \"model\": {{", 1);
+						itemBlock.WriteLine("    \"type\": \"minecraft:model\",", 2);
+						itemBlock.WriteLine($"    \"model\": \"{itemData.ModId}:block/{itemData.EntryName}\"", 4);
+						itemBlock.WriteLine("  }}", 5);
+						itemBlock.WriteLine("}}", 6);
+						itemBlock.Close();
+					}
+					else
+					{
+						Console.WriteLine($"Writing Item for Stair called: {itemData.EntryName}");
 						itemBlock.WriteLine("{{", 0);
 						itemBlock.WriteLine("  \"model\": {{", 1);
 						itemBlock.WriteLine("    \"type\": \"minecraft:model\",", 2);
