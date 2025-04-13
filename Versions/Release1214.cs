@@ -45,6 +45,8 @@ namespace MinecraftModDatagen.Versions
 				var itemData = item.Value;
 				if (itemData.ModelType == "Cube_All")
 				{
+					List<string> namespaces = itemData.ModId.Split(';').ToList();
+					itemData.ModId = namespaces[0];
 					Console.WriteLine($"Writing Block State for Cube_All called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
@@ -58,14 +60,28 @@ namespace MinecraftModDatagen.Versions
 					blockstate.Close();
 					Console.WriteLine($"Writing Block Model(s) for Cube_All called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
-					var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
-					modelBlock.WriteLine("{{", 0);
-					modelBlock.WriteLine("  \"parent\": \"minecraft:block/cube_all\",", 1);
-					modelBlock.WriteLine("  \"textures\": {{", 2);
-					modelBlock.WriteLine($"    \"all\": \"{itemData.ModId}:block/{itemData.ModelTextureName}\"", 3);
-					modelBlock.WriteLine("  }}", 4);
-					modelBlock.WriteLine("}}", 5);
-					modelBlock.Close();
+					if (namespaces.Count == 1)
+					{
+						var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						modelBlock.WriteLine("{{", 0);
+						modelBlock.WriteLine("  \"parent\": \"minecraft:block/cube_all\",", 1);
+						modelBlock.WriteLine("  \"textures\": {{", 2);
+						modelBlock.WriteLine($"    \"all\": \"{itemData.ModId}:block/{itemData.ModelTextureName}\"", 3);
+						modelBlock.WriteLine("  }}", 4);
+						modelBlock.WriteLine("}}", 5);
+						modelBlock.Close();
+					}
+					else
+					{
+						var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						modelBlock.WriteLine("{{", 0);
+						modelBlock.WriteLine("  \"parent\": \"minecraft:block/cube_all\",", 1);
+						modelBlock.WriteLine("  \"textures\": {{", 2);
+						modelBlock.WriteLine($"    \"all\": \"{namespaces[1]}:block/{itemData.ModelTextureName}\"", 3);
+						modelBlock.WriteLine("  }}", 4);
+						modelBlock.WriteLine("}}", 5);
+						modelBlock.Close();
+					}
 					Console.WriteLine($"Expecting a file called {itemData.ModelTextureName}.png to be in textures/block");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/items/");
 					var itemBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/items/{itemData.EntryName}.json");
@@ -107,6 +123,8 @@ namespace MinecraftModDatagen.Versions
 				}
 				if (itemData.ModelType == "Cube")
 				{
+					List<string> namespaces = itemData.ModId.Split(';').ToList();
+					itemData.ModId = namespaces[0];
 					Console.WriteLine($"Writing Block State for Cube called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
@@ -121,19 +139,38 @@ namespace MinecraftModDatagen.Versions
 					Console.WriteLine($"Writing Block Model(s) for Cube called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					List<string> models = itemData.ModelTextureName.Split(';').ToList();
-					var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
-					modelBlock.WriteLine("{{", 0);
-					modelBlock.WriteLine("  \"parent\": \"block/cube\",", 1);
-					modelBlock.WriteLine("  \"textures\": {{", 2);
-					modelBlock.WriteLine($"    \"down\": \"{itemData.ModId}:block/{models[0]}\",", 3);
-					modelBlock.WriteLine($"    \"up\": \"{itemData.ModId}:block/{models[1]}\",", 4);
-					modelBlock.WriteLine($"    \"north\": \"{itemData.ModId}:block/{models[2]}\",", 5);
-					modelBlock.WriteLine($"    \"east\": \"{itemData.ModId}:block/{models[3]}\",", 6);
-					modelBlock.WriteLine($"    \"south\": \"{itemData.ModId}:block/{models[4]}\",", 7);
-					modelBlock.WriteLine($"    \"west\": \"{itemData.ModId}:block/{models[5]}\"", 8);
-					modelBlock.WriteLine("  }}", 9);
-					modelBlock.WriteLine("}}", 10);
-					modelBlock.Close();
+					if (namespaces.Count == 1)
+					{
+						var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						modelBlock.WriteLine("{{", 0);
+						modelBlock.WriteLine("  \"parent\": \"block/cube\",", 1);
+						modelBlock.WriteLine("  \"textures\": {{", 2);
+						modelBlock.WriteLine($"    \"down\": \"{itemData.ModId}:block/{models[0]}\",", 3);
+						modelBlock.WriteLine($"    \"up\": \"{itemData.ModId}:block/{models[1]}\",", 4);
+						modelBlock.WriteLine($"    \"north\": \"{itemData.ModId}:block/{models[2]}\",", 5);
+						modelBlock.WriteLine($"    \"east\": \"{itemData.ModId}:block/{models[3]}\",", 6);
+						modelBlock.WriteLine($"    \"south\": \"{itemData.ModId}:block/{models[4]}\",", 7);
+						modelBlock.WriteLine($"    \"west\": \"{itemData.ModId}:block/{models[5]}\"", 8);
+						modelBlock.WriteLine("  }}", 9);
+						modelBlock.WriteLine("}}", 10);
+						modelBlock.Close();
+					}
+					else
+					{
+						var modelBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						modelBlock.WriteLine("{{", 0);
+						modelBlock.WriteLine("  \"parent\": \"block/cube\",", 1);
+						modelBlock.WriteLine("  \"textures\": {{", 2);
+						modelBlock.WriteLine($"    \"down\": \"{namespaces[1]}:block/{models[0]}\",", 3);
+						modelBlock.WriteLine($"    \"up\": \"{namespaces[2]}:block/{models[1]}\",", 4);
+						modelBlock.WriteLine($"    \"north\": \"{namespaces[3]}:block/{models[2]}\",", 5);
+						modelBlock.WriteLine($"    \"east\": \"{namespaces[4]}:block/{models[3]}\",", 6);
+						modelBlock.WriteLine($"    \"south\": \"{namespaces[5]}:block/{models[4]}\",", 7);
+						modelBlock.WriteLine($"    \"west\": \"{namespaces[6]}:block/{models[5]}\"", 8);
+						modelBlock.WriteLine("  }}", 9);
+						modelBlock.WriteLine("}}", 10);
+						modelBlock.Close();
+					}
 					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
@@ -180,6 +217,8 @@ namespace MinecraftModDatagen.Versions
 				}
 				if (itemData.ModelType == "Button")
 				{
+					List<string> namespaces = itemData.ModId.Split(';').ToList();
+					itemData.ModId = namespaces[0];
 					Console.WriteLine($"Writing Block State for Button called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
@@ -304,31 +343,64 @@ namespace MinecraftModDatagen.Versions
 					blockstate.Close();
 					Console.WriteLine($"Writing Block Model(s) for Button called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
-					var button = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
-					button.WriteLine("{{", 0);
-					button.WriteLine("  \"parent\": \"minecraft:block/button\",", 1);
-					button.WriteLine("  \"textures\": {{", 2);
-					button.WriteLine($"    \"texture\": \"{itemData.ModId}:block/{itemData.ModelTextureName}\"", 3);
-					button.WriteLine("  }}", 4);
-					button.WriteLine("}}", 5);
-					button.Close();
-					var buttonPressed = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_pressed.json");
-					buttonPressed.WriteLine("{{", 0);
-					buttonPressed.WriteLine("  \"parent\": \"minecraft:block/button_pressed\",", 1);
-					buttonPressed.WriteLine("  \"textures\": {{", 2);
-					buttonPressed.WriteLine($"    \"texture\": \"{itemData.ModId}:block/{itemData.ModelTextureName}\"", 3);
-					buttonPressed.WriteLine("  }}", 4);
-					buttonPressed.WriteLine("}}", 5);
-					buttonPressed.Close();
-					var buttonInventory = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inventory.json");
-					buttonInventory.WriteLine("{{", 0);
-					buttonInventory.WriteLine("  \"parent\": \"minecraft:block/button_inventory\",", 1);
-					buttonInventory.WriteLine("  \"textures\": {{", 2);
-					buttonInventory.WriteLine($"    \"texture\": \"{itemData.ModId}:block/{itemData.ModelTextureName}\"", 3);
-					buttonInventory.WriteLine("  }}", 4);
-					buttonInventory.WriteLine("}}", 5);
-					buttonInventory.Close();
-					Console.WriteLine($"Expecting a file called {itemData.ModelTextureName}.png to be in textures/block");
+					List<string> models = itemData.ModelTextureName.Split(';').ToList();
+					if (namespaces.Count == 1)
+					{
+						var button = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						button.WriteLine("{{", 0);
+						button.WriteLine("  \"parent\": \"minecraft:block/button\",", 1);
+						button.WriteLine("  \"textures\": {{", 2);
+						button.WriteLine($"    \"texture\": \"{itemData.ModId}:block/{models[0]}\"", 3);
+						button.WriteLine("  }}", 4);
+						button.WriteLine("}}", 5);
+						button.Close();
+						var buttonPressed = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_pressed.json");
+						buttonPressed.WriteLine("{{", 0);
+						buttonPressed.WriteLine("  \"parent\": \"minecraft:block/button_pressed\",", 1);
+						buttonPressed.WriteLine("  \"textures\": {{", 2);
+						buttonPressed.WriteLine($"    \"texture\": \"{itemData.ModId}:block/{models[1]}\"", 3);
+						buttonPressed.WriteLine("  }}", 4);
+						buttonPressed.WriteLine("}}", 5);
+						buttonPressed.Close();
+						var buttonInventory = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inventory.json");
+						buttonInventory.WriteLine("{{", 0);
+						buttonInventory.WriteLine("  \"parent\": \"minecraft:block/button_inventory\",", 1);
+						buttonInventory.WriteLine("  \"textures\": {{", 2);
+						buttonInventory.WriteLine($"    \"texture\": \"{itemData.ModId}:block/{models[2]}\"", 3);
+						buttonInventory.WriteLine("  }}", 4);
+						buttonInventory.WriteLine("}}", 5);
+						buttonInventory.Close();
+					}
+					else
+					{
+						var button = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						button.WriteLine("{{", 0);
+						button.WriteLine("  \"parent\": \"minecraft:block/button\",", 1);
+						button.WriteLine("  \"textures\": {{", 2);
+						button.WriteLine($"    \"texture\": \"{namespaces[1]}:block/{models[0]}\"", 3);
+						button.WriteLine("  }}", 4);
+						button.WriteLine("}}", 5);
+						button.Close();
+						var buttonPressed = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_pressed.json");
+						buttonPressed.WriteLine("{{", 0);
+						buttonPressed.WriteLine("  \"parent\": \"minecraft:block/button_pressed\",", 1);
+						buttonPressed.WriteLine("  \"textures\": {{", 2);
+						buttonPressed.WriteLine($"    \"texture\": \"{namespaces[2]}:block/{models[1]}\"", 3);
+						buttonPressed.WriteLine("  }}", 4);
+						buttonPressed.WriteLine("}}", 5);
+						buttonPressed.Close();
+						var buttonInventory = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inventory.json");
+						buttonInventory.WriteLine("{{", 0);
+						buttonInventory.WriteLine("  \"parent\": \"minecraft:block/button_inventory\",", 1);
+						buttonInventory.WriteLine("  \"textures\": {{", 2);
+						buttonInventory.WriteLine($"    \"texture\": \"{namespaces[3]}:block/{models[2]}\"", 3);
+						buttonInventory.WriteLine("  }}", 4);
+						buttonInventory.WriteLine("}}", 5);
+						buttonInventory.Close();
+					}
+					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/items/");
 					var itemBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/items/{itemData.EntryName}.json");
 					if (itemData.ItemTextureName == "")
@@ -369,6 +441,8 @@ namespace MinecraftModDatagen.Versions
 				}
 				if (itemData.ModelType == "Slab")
 				{
+					List<string> namespaces = itemData.ModId.Split(';').ToList();
+					itemData.ModId = namespaces[0];
 					Console.WriteLine($"Writing Block State for Slab called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
@@ -389,39 +463,78 @@ namespace MinecraftModDatagen.Versions
 					Console.WriteLine($"Writing Block Model(s) for Slab called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					List<string> models = itemData.ModelTextureName.Split(';').ToList();
-					var slab = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
-					slab.WriteLine("{{", 0);
-					slab.WriteLine("  \"parent\": \"minecraft:block/slab\",", 1);
-					slab.WriteLine("  \"textures\": {{", 2);
-					slab.WriteLine($"    \"bottom\": \"{itemData.ModId}:block/{models[0]}\",", 3);
-					slab.WriteLine($"    \"side\": \"{itemData.ModId}:block/{models[1]}\",", 4);
-					slab.WriteLine($"    \"top\": \"{itemData.ModId}:block/{models[2]}\"", 5);
-					slab.WriteLine("  }}", 6);
-					slab.WriteLine("}}", 7);
-					slab.Close();
-					var slabDouble = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_double.json");
-					slabDouble.WriteLine("{{", 0);
-					slabDouble.WriteLine("  \"parent\": \"block/cube\",", 1);
-					slabDouble.WriteLine("  \"textures\": {{", 2);
-					slabDouble.WriteLine($"    \"down\": \"{itemData.ModId}:block/{models[3]}\",", 3);
-					slabDouble.WriteLine($"    \"up\": \"{itemData.ModId}:block/{models[4]}\",", 4);
-					slabDouble.WriteLine($"    \"north\": \"{itemData.ModId}:block/{models[5]}\",", 5);
-					slabDouble.WriteLine($"    \"east\": \"{itemData.ModId}:block/{models[6]}\",", 6);
-					slabDouble.WriteLine($"    \"south\": \"{itemData.ModId}:block/{models[7]}\",", 7);
-					slabDouble.WriteLine($"    \"west\": \"{itemData.ModId}:block/{models[8]}\"", 8);
-					slabDouble.WriteLine("  }}", 9);
-					slabDouble.WriteLine("}}", 10);
-					slabDouble.Close();
-					var slabTop = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_top.json");
-					slabTop.WriteLine("{{", 0);
-					slabTop.WriteLine("  \"parent\": \"minecraft:block/slab_top\",", 1);
-					slabTop.WriteLine("  \"textures\": {{", 2);
-					slabTop.WriteLine($"    \"bottom\": \"{itemData.ModId}:block/{models[9]}\",", 3);
-					slabTop.WriteLine($"    \"side\": \"{itemData.ModId}:block/{models[10]}\",", 4);
-					slabTop.WriteLine($"    \"top\": \"{itemData.ModId}:block/{models[11]}\"", 5);
-					slabTop.WriteLine("  }}", 6);
-					slabTop.WriteLine("}}", 7);
-					slabTop.Close();
+					if (namespaces.Count == 1)
+					{
+						var slab = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						slab.WriteLine("{{", 0);
+						slab.WriteLine("  \"parent\": \"minecraft:block/slab\",", 1);
+						slab.WriteLine("  \"textures\": {{", 2);
+						slab.WriteLine($"    \"bottom\": \"{itemData.ModId}:block/{models[0]}\",", 3);
+						slab.WriteLine($"    \"side\": \"{itemData.ModId}:block/{models[1]}\",", 4);
+						slab.WriteLine($"    \"top\": \"{itemData.ModId}:block/{models[2]}\"", 5);
+						slab.WriteLine("  }}", 6);
+						slab.WriteLine("}}", 7);
+						slab.Close();
+						var slabDouble = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_double.json");
+						slabDouble.WriteLine("{{", 0);
+						slabDouble.WriteLine("  \"parent\": \"block/cube\",", 1);
+						slabDouble.WriteLine("  \"textures\": {{", 2);
+						slabDouble.WriteLine($"    \"down\": \"{itemData.ModId}:block/{models[3]}\",", 3);
+						slabDouble.WriteLine($"    \"up\": \"{itemData.ModId}:block/{models[4]}\",", 4);
+						slabDouble.WriteLine($"    \"north\": \"{itemData.ModId}:block/{models[5]}\",", 5);
+						slabDouble.WriteLine($"    \"east\": \"{itemData.ModId}:block/{models[6]}\",", 6);
+						slabDouble.WriteLine($"    \"south\": \"{itemData.ModId}:block/{models[7]}\",", 7);
+						slabDouble.WriteLine($"    \"west\": \"{itemData.ModId}:block/{models[8]}\"", 8);
+						slabDouble.WriteLine("  }}", 9);
+						slabDouble.WriteLine("}}", 10);
+						slabDouble.Close();
+						var slabTop = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_top.json");
+						slabTop.WriteLine("{{", 0);
+						slabTop.WriteLine("  \"parent\": \"minecraft:block/slab_top\",", 1);
+						slabTop.WriteLine("  \"textures\": {{", 2);
+						slabTop.WriteLine($"    \"bottom\": \"{itemData.ModId}:block/{models[9]}\",", 3);
+						slabTop.WriteLine($"    \"side\": \"{itemData.ModId}:block/{models[10]}\",", 4);
+						slabTop.WriteLine($"    \"top\": \"{itemData.ModId}:block/{models[11]}\"", 5);
+						slabTop.WriteLine("  }}", 6);
+						slabTop.WriteLine("}}", 7);
+						slabTop.Close();
+					}
+					else
+					{
+						var slab = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						slab.WriteLine("{{", 0);
+						slab.WriteLine("  \"parent\": \"minecraft:block/slab\",", 1);
+						slab.WriteLine("  \"textures\": {{", 2);
+						slab.WriteLine($"    \"bottom\": \"{namespaces[1]}:block/{models[0]}\",", 3);
+						slab.WriteLine($"    \"side\": \"{namespaces[2]}:block/{models[1]}\",", 4);
+						slab.WriteLine($"    \"top\": \"{namespaces[3]}:block/{models[2]}\"", 5);
+						slab.WriteLine("  }}", 6);
+						slab.WriteLine("}}", 7);
+						slab.Close();
+						var slabDouble = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_double.json");
+						slabDouble.WriteLine("{{", 0);
+						slabDouble.WriteLine("  \"parent\": \"block/cube\",", 1);
+						slabDouble.WriteLine("  \"textures\": {{", 2);
+						slabDouble.WriteLine($"    \"down\": \"{namespaces[4]}:block/{models[3]}\",", 3);
+						slabDouble.WriteLine($"    \"up\": \"{namespaces[5]}:block/{models[4]}\",", 4);
+						slabDouble.WriteLine($"    \"north\": \"{namespaces[6]}:block/{models[5]}\",", 5);
+						slabDouble.WriteLine($"    \"east\": \"{namespaces[7]}:block/{models[6]}\",", 6);
+						slabDouble.WriteLine($"    \"south\": \"{namespaces[8]}:block/{models[7]}\",", 7);
+						slabDouble.WriteLine($"    \"west\": \"{namespaces[9]}:block/{models[8]}\"", 8);
+						slabDouble.WriteLine("  }}", 9);
+						slabDouble.WriteLine("}}", 10);
+						slabDouble.Close();
+						var slabTop = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_top.json");
+						slabTop.WriteLine("{{", 0);
+						slabTop.WriteLine("  \"parent\": \"minecraft:block/slab_top\",", 1);
+						slabTop.WriteLine("  \"textures\": {{", 2);
+						slabTop.WriteLine($"    \"bottom\": \"{namespaces[10]}:block/{models[9]}\",", 3);
+						slabTop.WriteLine($"    \"side\": \"{namespaces[11]}:block/{models[10]}\",", 4);
+						slabTop.WriteLine($"    \"top\": \"{namespaces[12]}:block/{models[11]}\"", 5);
+						slabTop.WriteLine("  }}", 6);
+						slabTop.WriteLine("}}", 7);
+						slabTop.Close();
+					}
 					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
@@ -474,6 +587,8 @@ namespace MinecraftModDatagen.Versions
 				}
 				if (itemData.ModelType == "Stair")
 				{
+					List<string> namespaces = itemData.ModId.Split(';').ToList();
+					itemData.ModId = namespaces[0];
 					Console.WriteLine($"Writing Block State for Stair called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
@@ -692,42 +807,84 @@ namespace MinecraftModDatagen.Versions
 					Console.WriteLine($"Writing Block Model(s) for Stair called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					List<string> models = itemData.ModelTextureName.Split(';').ToList();
-					var stair = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
-					stair.WriteLine($$"""
-					                  {
-					                    "parent": "minecraft:block/stairs",
-					                    "textures": {
-					                      "bottom": "{{itemData.ModId}}:block/{{models[0]}}",
-					                      "side": "{{itemData.ModId}}:block/{{models[1]}}",
-					                      "top": "{{itemData.ModId}}:block/{{models[2]}}"
-					                    }
-					                  }
-					                  """);
-					stair.Close();
-					var stairinner = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inner.json");
-					stairinner.WriteLine($$"""
-					                       {
-					                         "parent": "minecraft:block/inner_stairs",
-					                         "textures": {
-					                           "bottom": "{{itemData.ModId}}:block/{{models[3]}}",
-					                           "side": "{{itemData.ModId}}:block/{{models[4]}}",
-					                           "top": "{{itemData.ModId}}:block/{{models[5]}}"
-					                         }
-					                       }
-					                       """);
-					stairinner.Close();
-					var stairouter = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_outer.json");
-					stairouter.WriteLine($$"""
-					                       {
-					                         "parent": "minecraft:block/outer_stairs",
-					                         "textures": {
-					                           "bottom": "{{itemData.ModId}}:block/{{models[6]}}",
-					                           "side": "{{itemData.ModId}}:block/{{models[7]}}",
-					                           "top": "{{itemData.ModId}}:block/{{models[8]}}"
-					                         }
-					                       }
-					                       """);
-					stairouter.Close();
+					if (namespaces.Count == 1)
+					{
+						var stair = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						stair.WriteLine($$"""
+						                  {
+						                    "parent": "minecraft:block/stairs",
+						                    "textures": {
+						                      "bottom": "{{itemData.ModId}}:block/{{models[0]}}",
+						                      "side": "{{itemData.ModId}}:block/{{models[1]}}",
+						                      "top": "{{itemData.ModId}}:block/{{models[2]}}"
+						                    }
+						                  }
+						                  """);
+						stair.Close();
+						var stairinner = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inner.json");
+						stairinner.WriteLine($$"""
+						                       {
+						                         "parent": "minecraft:block/inner_stairs",
+						                         "textures": {
+						                           "bottom": "{{itemData.ModId}}:block/{{models[3]}}",
+						                           "side": "{{itemData.ModId}}:block/{{models[4]}}",
+						                           "top": "{{itemData.ModId}}:block/{{models[5]}}"
+						                         }
+						                       }
+						                       """);
+						stairinner.Close();
+						var stairouter = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_outer.json");
+						stairouter.WriteLine($$"""
+						                       {
+						                         "parent": "minecraft:block/outer_stairs",
+						                         "textures": {
+						                           "bottom": "{{itemData.ModId}}:block/{{models[6]}}",
+						                           "side": "{{itemData.ModId}}:block/{{models[7]}}",
+						                           "top": "{{itemData.ModId}}:block/{{models[8]}}"
+						                         }
+						                       }
+						                       """);
+						stairouter.Close();
+					}
+					else
+					{
+						var stair = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						stair.WriteLine($$"""
+						                  {
+						                    "parent": "minecraft:block/stairs",
+						                    "textures": {
+						                      "bottom": "{{namespaces[1]}}:block/{{models[0]}}",
+						                      "side": "{{namespaces[2]}}:block/{{models[1]}}",
+						                      "top": "{{namespaces[3]}}:block/{{models[2]}}"
+						                    }
+						                  }
+						                  """);
+						stair.Close();
+						var stairinner = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_inner.json");
+						stairinner.WriteLine($$"""
+						                       {
+						                         "parent": "minecraft:block/inner_stairs",
+						                         "textures": {
+						                           "bottom": "{{namespaces[4]}}:block/{{models[3]}}",
+						                           "side": "{{namespaces[5]}}:block/{{models[4]}}",
+						                           "top": "{{namespaces[6]}}:block/{{models[5]}}"
+						                         }
+						                       }
+						                       """);
+						stairinner.Close();
+						var stairouter = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_outer.json");
+						stairouter.WriteLine($$"""
+						                       {
+						                         "parent": "minecraft:block/outer_stairs",
+						                         "textures": {
+						                           "bottom": "{{namespaces[7]}}:block/{{models[6]}}",
+						                           "side": "{{namespaces[8]}}:block/{{models[7]}}",
+						                           "top": "{{namespaces[9]}}:block/{{models[8]}}"
+						                         }
+						                       }
+						                       """);
+						stairouter.Close();
+					}
 					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
@@ -777,6 +934,8 @@ namespace MinecraftModDatagen.Versions
 				}
 				if (itemData.ModelType == "Lever")
 				{
+					List<string> namespaces = itemData.ModId.Split(';').ToList();
+					itemData.ModId = namespaces[0];
 					Console.WriteLine($"Writing Block State for Lever called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
@@ -896,78 +1055,157 @@ namespace MinecraftModDatagen.Versions
 					Console.WriteLine($"Writing Block Model(s) for Lever called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
 					List<string> models = itemData.ModelTextureName.Split(';').ToList();
-					var lever = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
-					lever.WriteLine($$"""
-					                  {
-					                      "ambientocclusion": false,
-					                      "textures": {
-					                          "particle": "{{itemData.ModId}}:block/{{models[0]}}",
-					                          "base": "{{itemData.ModId}}:block/{{models[1]}}",
-					                          "lever": "{{itemData.ModId}}:block/{{models[2]}}"
-					                      },
-					                      "elements": [
-					                          {   "from": [ 5, -0.02, 4 ],
-					                              "to": [ 11, 2.98, 12 ],
-					                              "faces": {
-					                                  "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
-					                                  "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
-					                                  "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
-					                                  "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
-					                                  "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
-					                                  "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
-					                              }
-					                          },
-					                          {   "from": [ 7, 1, 7 ],
-					                              "to": [ 9, 11, 9 ],
-					                              "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": -45 },
-					                              "faces": {
-					                                  "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
-					                                  "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
-					                                  "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
-					                                  "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
-					                                  "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
-					                              }
-					                          }
-					                      ]
-					                  }
-					                  """);
-					lever.Close();
-					var lever_on = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_on.json");
-					lever_on.WriteLine($$"""
-					                     {
-					                         "ambientocclusion": false,
-					                         "textures": {
-					                             "particle": "{{itemData.ModId}}:block/{{models[3]}}",
-					                             "base": "{{itemData.ModId}}:block/{{models[4]}}",
-					                             "lever": "{{itemData.ModId}}:block/{{models[5]}}"
-					                         },
-					                         "elements": [
-					                             {   "from": [ 5, -0.02, 4 ],
-					                                 "to": [ 11, 2.98, 12 ],
-					                                 "faces": {
-					                                     "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
-					                                     "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
-					                                     "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
-					                                     "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
-					                                     "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
-					                                     "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
-					                                 }
-					                             },
-					                             {   "from": [ 7, 1, 7 ],
-					                                 "to": [ 9, 11, 9 ],
-					                                 "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": 45 },
-					                                 "faces": {
-					                                     "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
-					                                     "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
-					                                     "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
-					                                     "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
-					                                     "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
-					                                 }
-					                             }
-					                         ]
-					                     }
-					                     """);
-					lever_on.Close();
+					
+					if (namespaces.Count == 1)
+					{
+						var lever = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						lever.WriteLine($$"""
+						                  {
+						                      "ambientocclusion": false,
+						                      "textures": {
+						                          "particle": "{{itemData.ModId}}:block/{{models[0]}}",
+						                          "base": "{{itemData.ModId}}:block/{{models[1]}}",
+						                          "lever": "{{itemData.ModId}}:block/{{models[2]}}"
+						                      },
+						                      "elements": [
+						                          {   "from": [ 5, -0.02, 4 ],
+						                              "to": [ 11, 2.98, 12 ],
+						                              "faces": {
+						                                  "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
+						                                  "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
+						                                  "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                  "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                  "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
+						                                  "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
+						                              }
+						                          },
+						                          {   "from": [ 7, 1, 7 ],
+						                              "to": [ 9, 11, 9 ],
+						                              "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": -45 },
+						                              "faces": {
+						                                  "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
+						                                  "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                  "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                  "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                  "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
+						                              }
+						                          }
+						                      ]
+						                  }
+						                  """);
+						lever.Close();
+						var lever_on = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_on.json");
+						lever_on.WriteLine($$"""
+						                     {
+						                         "ambientocclusion": false,
+						                         "textures": {
+						                             "particle": "{{itemData.ModId}}:block/{{models[3]}}",
+						                             "base": "{{itemData.ModId}}:block/{{models[4]}}",
+						                             "lever": "{{itemData.ModId}}:block/{{models[5]}}"
+						                         },
+						                         "elements": [
+						                             {   "from": [ 5, -0.02, 4 ],
+						                                 "to": [ 11, 2.98, 12 ],
+						                                 "faces": {
+						                                     "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
+						                                     "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
+						                                     "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                     "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                     "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
+						                                     "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
+						                                 }
+						                             },
+						                             {   "from": [ 7, 1, 7 ],
+						                                 "to": [ 9, 11, 9 ],
+						                                 "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": 45 },
+						                                 "faces": {
+						                                     "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
+						                                     "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                     "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                     "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                     "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
+						                                 }
+						                             }
+						                         ]
+						                     }
+						                     """);
+						lever_on.Close();
+					}
+					else
+					{ 
+						var lever = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+						lever.WriteLine($$"""
+						                  {
+						                      "ambientocclusion": false,
+						                      "textures": {
+						                          "particle": "{{namespaces[1]}}:block/{{models[0]}}",
+						                          "base": "{{namespaces[2]}}:block/{{models[1]}}",
+						                          "lever": "{{namespaces[3]}}:block/{{models[2]}}"
+						                      },
+						                      "elements": [
+						                          {   "from": [ 5, -0.02, 4 ],
+						                              "to": [ 11, 2.98, 12 ],
+						                              "faces": {
+						                                  "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
+						                                  "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
+						                                  "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                  "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                  "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
+						                                  "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
+						                              }
+						                          },
+						                          {   "from": [ 7, 1, 7 ],
+						                              "to": [ 9, 11, 9 ],
+						                              "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": -45 },
+						                              "faces": {
+						                                  "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
+						                                  "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                  "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                  "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                  "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
+						                              }
+						                          }
+						                      ]
+						                  }
+						                  """);
+						lever.Close();
+						var lever_on = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_on.json");
+						lever_on.WriteLine($$"""
+						                     {
+						                         "ambientocclusion": false,
+						                         "textures": {
+						                             "particle": "{{namespaces[4]}}:block/{{models[3]}}",
+						                             "base": "{{namespaces[5]}}:block/{{models[4]}}",
+						                             "lever": "{{namespaces[6]}}:block/{{models[5]}}"
+						                         },
+						                         "elements": [
+						                             {   "from": [ 5, -0.02, 4 ],
+						                                 "to": [ 11, 2.98, 12 ],
+						                                 "faces": {
+						                                     "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
+						                                     "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
+						                                     "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                     "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+						                                     "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
+						                                     "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
+						                                 }
+						                             },
+						                             {   "from": [ 7, 1, 7 ],
+						                                 "to": [ 9, 11, 9 ],
+						                                 "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": 45 },
+						                                 "faces": {
+						                                     "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
+						                                     "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                     "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                     "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+						                                     "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
+						                                 }
+						                             }
+						                         ]
+						                     }
+						                     """);
+						lever_on.Close();
+					}
 					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
 					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
@@ -998,6 +1236,7 @@ namespace MinecraftModDatagen.Versions
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
 				}
+				// Continue from this point
 			}
 		}
 	}
