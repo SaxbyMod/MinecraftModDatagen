@@ -474,7 +474,7 @@ namespace MinecraftModDatagen.Versions
 				}
 				if (itemData.ModelType == "Stair")
 				{
-					Console.WriteLine($"Writing Block State for Slab called: {itemData.EntryName}");
+					Console.WriteLine($"Writing Block State for Stair called: {itemData.EntryName}");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
 					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
 					blockstate.WriteLine($$"""
@@ -760,7 +760,7 @@ namespace MinecraftModDatagen.Versions
 						itemBlock.WriteLine("  }}", 4);
 						itemBlock.WriteLine("}}", 5);
 						itemBlock.Close();
-						Console.WriteLine($"Writing Item Model for Slab called: {itemData.EntryName}");
+						Console.WriteLine($"Writing Item Model for Stair called: {itemData.EntryName}");
 						Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/item/");
 						var itemModel = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/item/{itemData.EntryName}.json");
 						itemModel.WriteLine("{{", 0);
@@ -772,6 +772,229 @@ namespace MinecraftModDatagen.Versions
 						itemModel.Close();
 						Console.WriteLine($"Expecting a file called {itemData.ItemTextureName}.png to be in textures/item");
 					}
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
+				}
+				if (itemData.ModelType == "Lever")
+				{
+					Console.WriteLine($"Writing Block State for Lever called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/blockstates/");
+					var blockstate = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/blockstates/{itemData.EntryName}.json");
+					blockstate.WriteLine($$"""
+					                       {
+					                         "variants": {
+					                           "face=ceiling,facing=east,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "face=ceiling,facing=east,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 180,
+					                             "y": 270
+					                           },
+					                           "face=ceiling,facing=north,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 180,
+					                             "y": 180
+					                           },
+					                           "face=ceiling,facing=north,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 180,
+					                             "y": 180
+					                           },
+					                           "face=ceiling,facing=south,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 180
+					                           },
+					                           "face=ceiling,facing=south,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 180
+					                           },
+					                           "face=ceiling,facing=west,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "face=ceiling,facing=west,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 180,
+					                             "y": 90
+					                           },
+					                           "face=floor,facing=east,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "y": 90
+					                           },
+					                           "face=floor,facing=east,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "y": 90
+					                           },
+					                           "face=floor,facing=north,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on"
+					                           },
+					                           "face=floor,facing=north,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}"
+					                           },
+					                           "face=floor,facing=south,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "y": 180
+					                           },
+					                           "face=floor,facing=south,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "y": 180
+					                           },
+					                           "face=floor,facing=west,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "y": 270
+					                           },
+					                           "face=floor,facing=west,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "y": 270
+					                           },
+					                           "face=wall,facing=east,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 90,
+					                             "y": 90
+					                           },
+					                           "face=wall,facing=east,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 90,
+					                             "y": 90
+					                           },
+					                           "face=wall,facing=north,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 90
+					                           },
+					                           "face=wall,facing=north,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 90
+					                           },
+					                           "face=wall,facing=south,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 90,
+					                             "y": 180
+					                           },
+					                           "face=wall,facing=south,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 90,
+					                             "y": 180
+					                           },
+					                           "face=wall,facing=west,powered=false": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}_on",
+					                             "x": 90,
+					                             "y": 270
+					                           },
+					                           "face=wall,facing=west,powered=true": {
+					                             "model": "{{itemData.ModId}}:block/{{itemData.EntryName}}",
+					                             "x": 90,
+					                             "y": 270
+					                           }
+					                         }
+					                       }
+					                       """);
+					blockstate.Close();
+					Console.WriteLine($"Writing Block Model(s) for Lever called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/block/");
+					List<string> models = itemData.ModelTextureName.Split(';').ToList();
+					var lever = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}.json");
+					lever.WriteLine($$"""
+					                  {
+					                      "ambientocclusion": false,
+					                      "textures": {
+					                          "particle": "{{itemData.ModId}}:block/{{models[0]}}",
+					                          "base": "{{itemData.ModId}}:block/{{models[1]}}",
+					                          "lever": "{{itemData.ModId}}:block/{{models[2]}}"
+					                      },
+					                      "elements": [
+					                          {   "from": [ 5, -0.02, 4 ],
+					                              "to": [ 11, 2.98, 12 ],
+					                              "faces": {
+					                                  "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
+					                                  "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
+					                                  "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+					                                  "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+					                                  "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
+					                                  "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
+					                              }
+					                          },
+					                          {   "from": [ 7, 1, 7 ],
+					                              "to": [ 9, 11, 9 ],
+					                              "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": -45 },
+					                              "faces": {
+					                                  "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
+					                                  "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+					                                  "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+					                                  "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+					                                  "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
+					                              }
+					                          }
+					                      ]
+					                  }
+					                  """);
+					lever.Close();
+					var lever_on = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/block/{itemData.EntryName}_on.json");
+					lever_on.WriteLine($$"""
+					                     {
+					                         "ambientocclusion": false,
+					                         "textures": {
+					                             "particle": "{{itemData.ModId}}:block/{{models[3]}}",
+					                             "base": "{{itemData.ModId}}:block/{{models[4]}}",
+					                             "lever": "{{itemData.ModId}}:block/{{models[5]}}"
+					                         },
+					                         "elements": [
+					                             {   "from": [ 5, -0.02, 4 ],
+					                                 "to": [ 11, 2.98, 12 ],
+					                                 "faces": {
+					                                     "down":  { "uv": [ 5, 4, 11, 12 ], "texture": "#base", "cullface": "down" },
+					                                     "up":    { "uv": [ 5, 4, 11, 12 ], "texture": "#base" },
+					                                     "north": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+					                                     "south": { "uv": [ 5, 0, 11,  3 ], "texture": "#base" },
+					                                     "west":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" },
+					                                     "east":  { "uv": [ 4, 0, 12,  3 ], "texture": "#base" }
+					                                 }
+					                             },
+					                             {   "from": [ 7, 1, 7 ],
+					                                 "to": [ 9, 11, 9 ],
+					                                 "rotation": { "origin": [ 8, 1, 8 ], "axis": "x", "angle": 45 },
+					                                 "faces": {
+					                                     "up":    { "uv": [ 7, 6, 9,  8 ], "texture": "#lever" },
+					                                     "north": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+					                                     "south": { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+					                                     "west":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" },
+					                                     "east":  { "uv": [ 7, 6, 9, 16 ], "texture": "#lever" }
+					                                 }
+					                             }
+					                         ]
+					                     }
+					                     """);
+					lever_on.Close();
+					Console.WriteLine($"Expecting a file called {models[0]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[1]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[2]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[3]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[4]}.png to be in textures/block");
+					Console.WriteLine($"Expecting a file called {models[5]}.png to be in textures/block");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/items/");
+					var itemBlock = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/items/{itemData.EntryName}.json");
+					Console.WriteLine($"Writing Item for Lever called: {itemData.EntryName}");
+					itemBlock.WriteLine("{{", 0);
+					itemBlock.WriteLine("  \"model\": {{", 1);
+					itemBlock.WriteLine("    \"type\": \"minecraft:model\",", 2);
+					itemBlock.WriteLine($"    \"model\": \"{itemData.ModId}:item/{itemData.EntryName}\"", 3);
+					itemBlock.WriteLine("  }}", 4);
+					itemBlock.WriteLine("}}", 5);
+					itemBlock.Close();
+					Console.WriteLine($"Writing Item Model for Lever called: {itemData.EntryName}");
+					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/models/item/");
+					var itemModel = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/models/item/{itemData.EntryName}.json");
+					itemModel.WriteLine("{{", 0);
+					itemModel.WriteLine("  \"parent\": \"minecraft:item/generated\",", 1);
+					itemModel.WriteLine("  \"textures\": {{", 2);
+					itemModel.WriteLine($"    \"layer0\": \"{itemData.ModId}:item/{itemData.ItemTextureName}\"", 3);
+					itemModel.WriteLine("  }}", 4);
+					itemModel.WriteLine("}}", 5);
+					itemModel.Close();
+					Console.WriteLine($"Expecting a file called {itemData.ItemTextureName}.png to be in textures/item");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
 				}
