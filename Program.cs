@@ -6,12 +6,15 @@ namespace MinecraftModDatagen
 	{
 		public static void Main()
 		{
-			Console.WriteLine("Input a minecraft version in Major Minor Bugfix form!");
-			Console.Write("Version: ");
-			var version = Console.ReadLine();
-			if (version == "1.21.4")
+			while (true)
 			{
-				Release1214.Datagen();
+				Console.WriteLine("Input a minecraft version in Major Minor Bugfix form!");
+				Console.Write("Version: ");
+				var version = Console.ReadLine();
+				if (version == "1.21.4")
+				{
+					Release1214.Datagen();
+				}
 			}
 		}
 	}
