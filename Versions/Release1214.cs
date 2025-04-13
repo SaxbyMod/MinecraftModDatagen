@@ -22,26 +22,38 @@ namespace MinecraftModDatagen.Versions
 				todoList.Add(line);
 			}
 			// Get Properties from CSV Lines
+			int i = 1;
 			foreach (var line in todoList)
 			{
-				for (int i = 1; i < todoList.Count; i++)
+				if (line == "ModID, EntryName, ModelType, ModelTextureName, ItemTextureName")
 				{
-					var section = line.Split(',');
-					// Create an Object for each Section.
-					DataType dataType = new DataType()
-					{
-						ModId = section[0],
-						EntryName = section[1],
-						ModelType = section[2],
-						ModelTextureName = section[3],
-						ItemTextureName = section[4],
-					};
-					// Add the Object to the data
-					data.Add(section[1], dataType);
+					Console.WriteLine($"Skipping unnened line");
+					continue;
 				}
+				var section = line.Split(',');
+				var entryName = section[1];
+				if (data.ContainsKey(entryName))
+				{
+					Console.WriteLine($"Duplicate EntryName found: {entryName}, skipping this entry.");
+					continue;
+				}
+				// Create an Object for each Section.
+				DataType dataType = new DataType()
+				{
+					ModId = section[0],
+					EntryName = section[1],
+					ModelType = section[2],
+					ModelTextureName = section[3],
+					ItemTextureName = section[4],
+				};
+				// Add the Object to the data
+				data.Add(dataType.EntryName, dataType);
+				i++;
 			}
+			// Read Lines in CSV than Datagen
 			foreach (var item in data)
 			{
+				Console.WriteLine($"Datagenning for {item.Key}");
 				var itemData = item.Value;
 				if (itemData.ModelType == "Cube_All")
 				{
@@ -1237,6 +1249,7 @@ namespace MinecraftModDatagen.Versions
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
 				}
 				// Continue from this point
+				Console.WriteLine($"Finished datagenning for {item.Key}");
 			}
 		}
 	}
