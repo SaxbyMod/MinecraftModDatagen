@@ -14,17 +14,51 @@ namespace MinecraftModDatagen.Versions
 			Console.WriteLine("File Name is 1.21.4.csv");
 			Console.Write("Press any key to continue...");
 			Console.ReadKey();
-			
+
 			// Define our Data and TODO Iteration
 			List<string> todoList = new List<string>();
 			Dictionary<string, DataType> data = new Dictionary<string, DataType>();
-			
+
 			// Get Lines from the Created CSV
 			foreach (var line in File.ReadAllLines("1.21.4.csv"))
 			{
 				todoList.Add(line);
 			}
-			
+			List<List<string>> names = new List<List<string>>();
+			List<List<string>> guids = new List<List<string>>();
+			// Read Lines in CSV than Language Provider
+			for (Iterator = 0; Iterator < todoList.Count; Iterator++) {
+				var NameSpaces = todoList[Iterator].Split(',').ToList()[0].Split(';').ToList();
+				var Names = todoList[Iterator].Split(',').ToList()[1].Split(';').ToList();
+				names.Add(Names);
+				guids.Add(NameSpaces);
+			}
+			// Create Language Provider
+			for (Iterator = 0; Iterator < names.Count; Iterator++)
+			{
+				Directory.CreateDirectory($"Datagen/1.21.4/{guids[Iterator][Iterator]}/lang/");
+				var en_us = File.CreateText($"Datagen/1.21.4/{guids[Iterator][Iterator]}/lang/en_us.json");
+				en_us.WriteLine("{{", 0);
+				int Iterator2 = 0;
+				foreach (var Name in names)
+				{
+					foreach (var NameType in Name)
+					{
+						if (NameType.Contains("en-us: "))
+						{
+							var name = NameType.Replace("en-us: ", "");
+							en_us.WriteLine($"  \"block.{guids[Iterator][Iterator]}.{Name[0]}\": \"{name}\",", Iterator2);
+							en_us.WriteLine($"  \"item.{guids[Iterator][Iterator]}.{Name[0]}\": \"{name}\",", Iterator2 + 1);
+						}
+					}
+					Iterator2++;
+					Iterator2++;
+				}
+				en_us.WriteLine($"  \"creativetab.{guids[Iterator][Iterator]}.{guids[Iterator][Iterator]}\": \"{CapitalizeFuncs.CapitalizeWithSpaces(guids[Iterator][Iterator].Replace("_", " "))}\"", Iterator2);
+				en_us.WriteLine("}}", Iterator2 + 1);
+				en_us.Close();
+			}
+
 			// Get Properties from CSV Lines
 			foreach (var line in todoList)
 			{
@@ -52,7 +86,7 @@ namespace MinecraftModDatagen.Versions
 				// Add the Object to the data
 				data.Add(dataType.EntryName, dataType);
 			}
-			
+
 			// Read Lines in CSV than Datagen
 			foreach (var item in data)
 			{
@@ -62,9 +96,6 @@ namespace MinecraftModDatagen.Versions
 				var entry = EntryNames[0];
 				List<string> namespaces = itemData.ModId.Split(';').ToList();
 				itemData.ModId = namespaces[0];
-				Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/lang/");
-				var en_us = File.CreateText($"Datagen/1.21.4/{itemData.ModId}/lang/en_us.json");
-				en_us.WriteLine("{{", 0);
 				if (itemData.ModelType == "Cube_All")
 				{
 					Console.WriteLine($"Writing Block State for Cube_All called: {entry}");
@@ -140,11 +171,7 @@ namespace MinecraftModDatagen.Versions
 					}
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
-					Console.WriteLine($"Iterator before increment: {Iterator}");
-					en_us.WriteLine($"    \"block.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator);
-					en_us.WriteLine($"    \"item.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator + 1);
-					Iterator += 2;
-					Console.WriteLine($"Iterator after increment: {Iterator}");
+
 				}
 				if (itemData.ModelType == "Cube")
 				{
@@ -237,11 +264,6 @@ namespace MinecraftModDatagen.Versions
 					}
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
-					Console.WriteLine($"Iterator before increment: {Iterator}");
-					en_us.WriteLine($"    \"block.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator);
-					en_us.WriteLine($"    \"item.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator + 1);
-					Iterator += 2;
-					Console.WriteLine($"Iterator after increment: {Iterator}");
 				}
 				if (itemData.ModelType == "Button")
 				{
@@ -464,11 +486,7 @@ namespace MinecraftModDatagen.Versions
 					}
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
-					Console.WriteLine($"Iterator before increment: {Iterator}");
-					en_us.WriteLine($"    \"block.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator);
-					en_us.WriteLine($"    \"item.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator + 1);
-					Iterator += 2;
-					Console.WriteLine($"Iterator after increment: {Iterator}");
+
 				}
 				if (itemData.ModelType == "Slab")
 				{
@@ -613,11 +631,6 @@ namespace MinecraftModDatagen.Versions
 					}
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
-					Console.WriteLine($"Iterator before increment: {Iterator}");
-					en_us.WriteLine($"    \"block.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator);
-					en_us.WriteLine($"    \"item.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator + 1);
-					Iterator += 2;
-					Console.WriteLine($"Iterator after increment: {Iterator}");
 				}
 				if (itemData.ModelType == "Stair")
 				{
@@ -963,11 +976,6 @@ namespace MinecraftModDatagen.Versions
 					}
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
-					Console.WriteLine($"Iterator before increment: {Iterator}");
-					en_us.WriteLine($"    \"block.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator);
-					en_us.WriteLine($"    \"item.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator + 1);
-					Iterator += 2;
-					Console.WriteLine($"Iterator after increment: {Iterator}");
 				}
 				if (itemData.ModelType == "Lever")
 				{
@@ -1270,16 +1278,8 @@ namespace MinecraftModDatagen.Versions
 					Console.WriteLine($"Expecting a file called {itemData.ItemTextureName}.png to be in textures/item");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/block/");
 					Directory.CreateDirectory($"Datagen/1.21.4/{itemData.ModId}/textures/item/");
-					Console.WriteLine($"Iterator before increment: {Iterator}");
-					en_us.WriteLine($"    \"block.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator);
-					en_us.WriteLine($"    \"item.{itemData.ModId}.{entry}\": \"{EntryNames[0]}\",", Iterator + 1);
-					Iterator += 2;
-					Console.WriteLine($"Iterator after increment: {Iterator}");
 				}
 				// Continue from this point
-				en_us.WriteLine($"    \"creativetab.{itemData.ModId}.{itemData.ModId}\": \"{CapitalizeFuncs.CapitalizeWithSpaces(itemData.ModId)}\"", Iterator);
-				en_us.WriteLine("}}", Iterator+1);
-				en_us.Close();
 				Console.WriteLine($"Finished datagenning for {item.Key}");
 			}
 		}
