@@ -7,6 +7,7 @@ namespace MinecraftModDatagen.Versions
 	{
 		public static void Datagen()
 		{
+			// Create and Read the CSV for the Version
 			Console.WriteLine("1.21.4 Selected; Fill out the CSV added to the file directory this is executing for each item/block/etc you want to add!");
 			if (!File.Exists("1.21.4.csv"))
 			{
@@ -28,7 +29,7 @@ namespace MinecraftModDatagen.Versions
 				todoList.Add(line);
 			}
 			
-			// Call Our Functions
+			// Call our Main functions for the version
 			JavaDatagen.Java_Datagen_Func(todoList);
 			LanguageDatagen.Language_Datagen_Func(todoList);
 			JSONDatagen.JSON_Datagen_Func(todoList, data);

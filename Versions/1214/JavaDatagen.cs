@@ -1,38 +1,94 @@
 ﻿using MinecraftModDatagen.Versions._1214.Java_Datagen;
 
-namespace MinecraftModDatagen.Versions._1214 {
+namespace MinecraftModDatagen.Versions._1214
+{
 	public class JavaDatagen
 	{
 		public static void Java_Datagen_Func(List<string> todoList)
 		{
-			int Iterator = 1;
-			List<List<string>> names = new List<List<string>>();
-			List<List<string>> properties = new List<List<string>>();
-			List<List<string>> guids = new List<List<string>>();
-			// Read Lines in CSV than Java Classes
-			for (Iterator = 0; Iterator < todoList.Count; Iterator++)
+			var names = new List<List<string>>();
+			var properties = new List<List<string>>();
+			var guids = new List<List<string>>();
+
+			for (int i = 1; i < todoList.Count; i++)
 			{
-				var Properties = todoList[Iterator].Split(',').ToList()[2].Split(';').ToList();
-				var NameSpaces = todoList[Iterator].Split(',').ToList()[0].Split(';').ToList();
-				var Names = todoList[Iterator].Split(',').ToList()[1].Split(';').ToList();
-				properties.Add(Properties);
-				guids.Add(NameSpaces);
-				names.Add(Names);
-			}
-			// Create Our Java Classes
-			for (Iterator = 0; Iterator < names.Count; Iterator++)
-			{
-				Directory.CreateDirectory($"Datagen/1.21.4/{guids[Iterator][Iterator]}/java/");
-				var Cubes = File.CreateText($"Datagen/1.21.4/{guids[Iterator][Iterator]}/java/Cubes.java");
-				int IteratorCubes = 0;
-				foreach (var Property in properties)
+				var parts = todoList[i].Split(',').Select(p => p.Trim()).ToList();
+
+				if (parts.Count < 3)
 				{
-					if (Property[0] == "Cube" || Property[0] == "Cube_All")
+					Console.WriteLine($"Skipping invalid line {i}: {todoList[i]}");
+					continue;
+				}
+
+				guids.Add(parts[0].Split(';').ToList());
+				names.Add(parts[1].Split(';').ToList());
+				properties.Add(parts[2].Split(';').ToList());
+			}
+
+			for (int i = 0; i < names.Count; i++)
+			{
+				var modIdProp = properties[i].FirstOrDefault(p => p.StartsWith("ModID: "));
+				if (string.IsNullOrEmpty(modIdProp))
+				{
+					Console.WriteLine($"ERROR: Missing ModID in entry {i}. SCREAMING.");
+					Console.ReadLine();
+					return;
+				}
+				string guid = guids[i][0];
+				string modId = modIdProp.Replace("ModID: ", "");
+				string outputPath = $"Datagen/1.21.4/{guid}/java/";
+				Directory.CreateDirectory(outputPath);
+
+				using StreamWriter writer = File.CreateText(Path.Combine(outputPath, "Cubes.java"));
+
+				// Write class and ModID block header
+				writer.WriteLine($$"""
+				                       package {{modId}}.blocks;
+				                       import net.minecraft.core.registries.Registries;
+				                       import net.minecraft.resources.ResourceKey;
+				                       import net.minecraft.resources.ResourceLocation;
+				                       import net.minecraft.util.valueproviders.UniformInt;
+				                       import net.minecraft.world.item.BlockItem;
+				                       import net.minecraft.world.item.Item;
+				                       import net.minecraft.world.level.block.*;
+				                       import net.minecraft.world.level.block.state.BlockBehaviour;
+				                       import net.minecraft.world.level.block.state.properties.BlockSetType;
+				                       import net.neoforged.bus.api.IEventBus;
+				                       import net.neoforged.neoforge.registries.DeferredBlock;
+				                       import net.neoforged.neoforge.registries.DeferredRegister;
+				                       import net.neoforged.neoforge.registries.DeferredItem;
+				                       import java.util.function.Supplier;
+				                   
+				                       public class ModAddedBlocks {
+				                           public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("{{modId}}");
+				                           public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks("{{modId}}");
+				                           private static <T extends Block> void RegisterItems(String Name, DeferredBlock<T> block) {
+				                               ModAddedItems.ITEMS.register(Name, () -> new BlockItem(block.get(),
+				                                   new Item.Properties().setId(ResourceKey.create(
+				                                       Registries.ITEM,
+				                                       ResourceLocation.fromNamespaceAndPath("{{modId}}", Name)
+				                                   ))
+				                               ));
+				                           }
+				                           private static <T extends Block> DeferredBlock<T> RegisterBlocks(String Name, Supplier<T> block) {
+				                               DeferredBlock<T> toReturn = BLOCKS.register(Name, block);
+				                               RegisterItems(Name, toReturn);
+				                               return toReturn;
+				                           }
+				                   """);
+				int cubeIndex = 0;
+				foreach (var propertyList in properties)
+				{
+					if (propertyList.Count == 0) continue;
+					var type = propertyList[0];
+
+					if (type == "Cube" || type == "Cube_All")
 					{
-						CubesGen.WriteToCube(Property, Iterator, IteratorCubes, Cubes, names);
+						CubesGen.WriteToCube(propertyList, cubeIndex, writer, names, modId);
+						cubeIndex++;
 					}
 				}
-				Cubes.Close();
+				writer.WriteLine("}");
 			}
 		}
 	}
