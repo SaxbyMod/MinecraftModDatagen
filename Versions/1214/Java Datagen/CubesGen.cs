@@ -5,8 +5,7 @@
 		public static void WriteToCube(List<string> Property, int IteratorCubes, StreamWriter Cubes, List<List<string>> names, string mod_id)
 		{
 			string name = names[IteratorCubes][0];
-
-			string block = $"	public static final DeferredBlock<Block> {name.ToUpper()} = RegisterMyBlocksAgain(\"{name}\", () -> new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(\"{mod_id}\", \"{name}\")))";
+			string block = $"	public static final DeferredBlock<Block> {name.ToUpper()} = RegisterBlocks(\"{name}\", () -> new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(\"{mod_id}\", \"{name}\")))";
 
 			foreach (var property in Property)
 			{
